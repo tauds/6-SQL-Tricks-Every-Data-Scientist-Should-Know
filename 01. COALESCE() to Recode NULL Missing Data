@@ -7,7 +7,7 @@ FROM
   CURRENT_TABLE    
 ORDER BY ID_VAR
 
-One important note, however, is that in databases, missing values can be encoded in various ways besides NULL. For instance, they could be empty string/blank space (e.g., EMPTY_STR_VAR in our table), or a character string 'NA' (e.g., NA_STR_VAR in our table). In these cases, COALESCE( ) would not work, but they can be handled with the CASE WHEN statement.
+/**One important note, however, is that in databases, missing values can be encoded in various ways besides NULL. For instance, they could be empty string/blank space (e.g., EMPTY_STR_VAR in our table), or a character string 'NA' (e.g., NA_STR_VAR in our table). In these cases, COALESCE( ) would not work, but they can be handled with the CASE WHEN statement.**/
 
 /** However, COALESCE() DOESN'T WORK for Empty or NA string, instead, use CASE WHEN **/
 SELECT 

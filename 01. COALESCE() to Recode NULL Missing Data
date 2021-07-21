@@ -1,0 +1,22 @@
+/** 1) COALESCE() to recode the NULL value to the character string MISSING **/
+SELECT 
+    ID_VAR, 
+    NULL_VAR,
+    COALESCE(NULL_VAR, 'MISSING') AS RECODE_NULL_VAR
+FROM  
+  CURRENT_TABLE    
+ORDER BY ID_VAR
+
+One important note, however, is that in databases, missing values can be encoded in various ways besides NULL. For instance, they could be empty string/blank space (e.g., EMPTY_STR_VAR in our table), or a character string 'NA' (e.g., NA_STR_VAR in our table). In these cases, COALESCE( ) would not work, but they can be handled with the CASE WHEN statement.
+
+/** However, COALESCE() DOESN'T WORK for Empty or NA string, instead, use CASE WHEN **/
+SELECT 
+  ID_VAR, 
+  EMPTY_STR_VAR, 
+  COALESCE(EMPTY_STR_VAR, 'MISSING') AS COALESCE_EMPTY_STR_VAR, 
+  CASE WHEN EMPTY_STR_VAR = ' ' THEN 'EMPTY_MISSING' END AS CASEWHEN_EMPTY_STR_VAR,   
+  NA_STR_VAR, 
+  CASE WHEN NA_STR_VAR = 'NA' THEN 'NA_MISSING' END AS CASEWHEN_NA_STR_VAR
+FROM 
+  CURRENT_TABLE 
+ORDER BY ID_VAR

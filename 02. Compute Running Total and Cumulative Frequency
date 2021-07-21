@@ -1,0 +1,17 @@
+/** 2) Running total/frequency **/
+SELECT
+  DAT.NUM_VAR, 
+  SUM(NUM_VAR) OVER (PARTITION BY JOIN_ID) AS TOTAL_SUM,
+  ROUND(CUM_SUM / SUM(NUM_VAR) OVER (PARTITION BY JOIN_ID), 4) AS CUM_FREQ
+FROM 
+(
+  SELECT 
+     T.*, 
+     SUM(NUM_VAR) OVER (ORDER BY NUM_VAR ROWS UNBOUNDED PRECEDING) AS CUM_SUM, 
+     CASE WHEN ID_VAR IS NOT NULL THEN '1' END AS JOIN_ID
+  FROM CURRENT_TABLE    T
+) DAT     
+ORDER BY CUM_FREQ
+
+/** Two tricks here, (1) SUM over ROWS UNBOUNDED PRECEDING will calculate the sum of all prior values to this point; (2) create a JOIN_ID to calculate the total sum. **/
+/** We use the window function for this calculation, and from the cumulative frequency, it is not hard to spot the last record as an outlier. **/

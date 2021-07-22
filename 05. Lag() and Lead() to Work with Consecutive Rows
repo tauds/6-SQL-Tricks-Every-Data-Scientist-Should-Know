@@ -1,0 +1,17 @@
+/** 5) LAG() or LEAD() function **/
+SELECT
+ DAT.ID_VAR,
+ DAT.SEQ_VAR,
+ DAT.NUM_VAR,
+ NUM_VAR - PREV_NUM AS NUM_DIFF    
+FROM 
+(
+    SELECT 
+     T.*, 
+     LAG(NUM_VAR, 1, 0) OVER (PARTITION BY ID_VAR ORDER BY SEQ_VAR) AS PREV_NUM        
+    FROM 
+     CURRENT_TABLE     T
+)  DAT
+ORDER BY ID_VAR, SEQ_VAR
+
+/** The LAG() function returns the prior row, and if there is none (i.e., the first row of each ID), the PREV_NUM is coded as 0 to compute the difference shown as NUM_DIFF below:**/

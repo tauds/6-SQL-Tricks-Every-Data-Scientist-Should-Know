@@ -1,0 +1,36 @@
+my_query = "SELECT * FROM CURRENT_TABLE"
+sql_data = pandas.read_sql(my_query, connection)
+
+Well, as long as our queries are short and finalized with no further changes, this method works well. However, what if our query has 1,000 lines, or we need to constantly update it? For these scenarios, we would want to read .sql files directly into Python or R. The following demonstrates how to implement a getSQL function in Python, and the idea is the same in R:
+
+Here, the first arg sql_query takes in a separate standalone .sql file that can be easily maintained, like this:
+
+SELECT 
+  *
+FROM 
+  CURRENT_TABLE   DAT
+WHERE 
+  ID_VAR IN ('ID_LIST')
+ORDER BY ID_VAR, SEQ_VAR
+The ID_LIST is a placeholder string for the values we are about to put in, and the getSQL( ) can be called using the following code:
+
+seq12_df = getSQL('SQL_FILE.sql', 'ID_LIST', 
+                  "','".join(['19228', '19272']), 
+                  database_con=conn)
+                  
+                  Bonus Tip, Regular Expression in SQL
+
+Even though I do not use regular expressions in SQL all the time, it sometimes can be convenient for text extraction. For instance, the following code shows a simple example of how to use REGEXP_INSTR( ) to find and extract numbers (see here for more details):
+
+/** Find and extract numbers between 0 - 9 that consecutively happens 5 times **/
+SELECT
+  SUBSTRING(LONG_TEXT, REG_IDX, REG_IDX+5) AS NUMBER_LIST_FOUND
+FROM 
+(
+  SELECT 
+    REGEXP_INSTR(LONG_TEXT, '[0-9]{5}') AS REG_IDX, 
+    LONG_TEXT
+  FROM 
+    BONUS
+) DAT 
+I hope you find this blog helpful.

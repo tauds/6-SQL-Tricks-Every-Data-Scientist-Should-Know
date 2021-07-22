@@ -1,0 +1,12 @@
+/** 3) Find the record having a number calculated by analytic functions (e.g., MAX) without self-joining **/
+SELECT *
+FROM 
+(
+  SELECT 
+    DAT.*, 
+    CASE WHEN (NUM_VAR = MAX(NUM_VAR) OVER (PARTITION BY ID_VAR)) THEN 'Y' 
+        ELSE 'N' END AS MAX_NUM_IND
+  FROM 
+    CURRENT_TABLE     DAT
+) DAT2
+WHERE MAX_NUM_IND = 'Y'
